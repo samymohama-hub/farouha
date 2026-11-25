@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مفاجأة عيد ميلاد - 11:11</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* الخط الأساسي وتنسيق الصفحة الكامل */
+    body {
+      font-family: 'Cairo', 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: linear-gradient(180deg, #7dd3fc 0%, #bae6fd 44%, #38bdf8 54%, #0284c7 100%);
+      color: #0f172a;
+    }
+
+    /* خلفية الكانفاس النهارية بالبط ولمسات الدوائر الكهربائية */
+    #bgCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* بطاقة زجاجية نهارية أنيقة */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.92);
+      box-shadow: 0 22px 50px -12px rgba(2, 132, 199, 0.28), 0 4px 16px rgba(15, 23, 42, 0.06);
+    }
+
+    /* اهتزاز خفيف عند كتابة باسورد خاطئ */
+    @keyframes shakeError {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(8px); }
+      40% { transform: translateX(-8px); }
+      60% { transform: translateX(6px); }
+      80% { transform: translateX(-6px); }
+    }
+    .shake-anim {
+      animation: shakeError 0.42s ease-in-out;
+    }
+
+    /* ظهور ناعم للرسالة بعد فتح القفل */
+    @keyframes revealCard {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .reveal-anim {
+      animation: revealCard 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* نبض ناعم عند تشغيل الأغنية */
+    @keyframes softBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+    .playing-pulse {
+      animation: softBeat 1.5s ease-in-out infinite;
+    }
+
+    /* سكرول بار لطيف داخل الرسالة على الشاشات الصغيرة */
+    .message-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .message-scroll::-webkit-scrollbar-thumb {
+      background: rgba(2, 132, 199, 0.35);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="relative flex flex-col items-center justify-center min-h-screen p-3 sm:p-6 select-none">
+
+  <!-- خلفية النهار والبحيرة والبط ولمسات الكهرباء -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- شاشة القفل (11:11) -->
+  <main id="lockScreen" class="relative z-10 w-full max-w-sm sm:max-w-md mx-auto">
+    <div id="lockCard" class="glass-card rounded-3xl p-5 sm:p-7 text-center">
+      <!-- أيقونة بطة لطيفة مع لمبة كهرباء صغيرة -->
+      <div class="mx-auto mb-3 w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-100 via-yellow-50 to-sky-100 border border-amber-200/80 shadow-inner flex items-center justify-center">
+        <svg viewBox="0 0 96 96" class="w-16 h-16" aria-label="بطة">
+          <circle cx="48" cy="48" r="38" fill="rgba(250, 204, 21, 0.18)" />
+          <path d="M22 54 C14 48, 17 38, 23 41 C28 43, 32 45, 39 44 C49 42, 62 45, 65 55 C68 65, 56 70, 42 70 C28 70, 25 61, 22 54 Z" fill="#facc15" stroke="#b45309" stroke-width="2" />
+          <circle cx="58" cy="36" r="13" fill="#fde047" stroke="#b45309" stroke-width="2" />
+          <path d="M55 23 C53 17, 58 17, 59 22 C61 17, 65 18, 62 24" fill="#fde047" stroke="#b45309" stroke-width="1.8" stroke-linecap="round" />
+          <ellipse cx="72" cy="38" rx="7.5" ry="4.2" fill="#fb923c" stroke="#c2410c" stroke-width="1.6" />
+          <ellipse cx="59" cy="41" rx="3.6" ry="2.2" fill="rgba(244, 63, 94, 0.45)" />
+          <circle cx="62" cy="34.5" r="2.8" fill="#1e1b4b" />
+          <circle cx="63" cy="33.5" r="1.1" fill="#ffffff" />
+          <path d="M35 51 C40 46, 51 47, 53 53 C51 58, 39 58, 35 51 Z" fill="#fef08a" stroke="#b45309" stroke-width="1.6" />
+          <circle cx="78" cy="21" r="6" fill="#fef08a" stroke="#d97706" stroke-width="1.4" />
+          <rect x="75.6" y="26.5" width="4.8" height="3.2" rx="1" fill="#94a3b8" />
+        </svg>
+      </div>
+
+      <!-- عرض الباسورد المكتوب -->
+      <div class="mb-4">
+        <div
+          id="pinDisplay"
+          dir="ltr"
+          class="mx-auto w-44 py-2.5 px-4 rounded-2xl bg-sky-50/90 border-2 border-sky-200 text-3xl font-extrabold tracking-[0.22em] text-sky-900 shadow-inner"
+        >
+          --:--
+        </div>
+        <p id="lockHint" class="mt-2 text-xs sm:text-sm font-semibold text-sky-800/80 h-5">
+          اضغط على الأرقام أو اكتب من الكيبورد
+        </p>
+      </div>
+
+      <!-- لوحة الأرقام -->
+      <div dir="ltr" class="grid grid-cols-3 gap-2.5 sm:gap-3">
+        <button type="button" onclick="handleKeypadPress('1')" class="keypad-btn py-3.5 rounded-2xl bg-white hover:bg-sky-50 active:scale-95 text-xl font-bold text-slate-800 border border-sky-100 shadow-sm transition">1</button>
+        <button type="button" onclick="handleKeypadPress('2')" class="keypad-btn py-3.5 rounded-2xl bg-white hover:bg-sky-50 active:scale-95 text-xl font-bold text-slate-800 border border-sky-100 shadow-sm transition">2</button>
+        <button type="button" onclick="handleKeypadPress('3')" class="keypad-btn py-3.5 rounded-2xl bg-white hover:bg-sky-50 active:scale-95 text-xl font-bold text-slate-800 border border-sky-100 shadow-sm transition">3</button>
+
+        <button type="button" onclick="handleKeypadPress('4')" class="keypad-btn py-3.5 rounded-2xl bg-white hover:bg-sky-50 active:scale-95 text-xl font-bold text-slate-800 border border-sky-100 shadow-sm transition">4</button>
+        <button type="button" onclick="handleKeypadPress('5')" class="keypad-btn py-3.5 rounded-2xl bg-white hover:bg-sky-50 active:scale-95 text-xl font-bold text-slate-800 border border-sky-100 shadow-sm transition">5</button>
+        <button type="button" onclick="handleKeypadPress('6')" class="keypad-btn py-3.5 rounded-2xl bg-white hover:bg-sky-50 active:scale-95 text-xl font-bold text-slate-800 border border-sky-100 shadow-sm transition">6</button>
+
+        <button type="button" onclick="handleKeypadPress('7')" class="keypad-btn py-3.5 rounded-2xl bg-white hover:bg-sky-50 active:scale-95 text-xl font-bold text-slate-800 border border-sky-100 shadow-sm transition">7</button>
+        <button type="button" onclick="handleKeypadPress('8')" class="keypad-btn py-3.5 rounded-2xl bg-white hover:bg-sky-50 active:scale-95 text-xl font-bold text-slate-800 border border-sky-100 shadow-sm transition">8</button>
+        <button type="button" onclick="handleKeypadPress('9')" class="keypad-btn py-3.5 rounded-2xl bg-white hover:bg-sky-50 active:scale-95 text-xl font-bold text-slate-800 border border-sky-100 shadow-sm transition">9</button>
+
+        <button type="button" onclick="handleClear()" aria-label="مسح" class="keypad-btn py-3.5 rounded-2xl bg-rose-50 hover:bg-rose-100 active:scale-95 text-sm sm:text-base font-bold text-rose-600 border border-rose-200 shadow-sm transition">
+          مسح
+        </button>
+        <button type="button" onclick="handleKeypadPress('0')" class="keypad-btn py-3.5 rounded-2xl bg-white hover:bg-sky-50 active:scale-95 text-xl font-bold text-slate-800 border border-sky-100 shadow-sm transition">0</button>
+        <button type="button" onclick="handleBackspace()" aria-label="حذف رقم" class="keypad-btn py-3.5 rounded-2xl bg-amber-50 hover:bg-amber-100 active:scale-95 text-sm sm:text-base font-bold text-amber-700 border border-amber-200 shadow-sm transition">
+          حذف
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- شاشة الرسالة ومشغل الأغنية بعد الفتح -->
+  <section id="birthdayCard" class="hidden relative z-10 w-full max-w-xl mx-auto my-auto">
+    <div class="glass-card rounded-3xl p-5 sm:p-8 space-y-5">
+      <!-- ترويسة لطيفة ببطة ولمبة كهرباء -->
+      <div class="flex items-center justify-between border-b border-sky-100 pb-3.5">
+        <div class="flex items-center gap-2.5">
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-amber-100 border border-amber-200 text-xl">
+            🦆
+          </span>
+          <div>
+            <h1 class="text-base sm:text-lg font-extrabold text-sky-950">11:11</h1>
+          </div>
+        </div>
+        <button
+          type="button"
+          onclick="lockAgain()"
+          class="px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-100 hover:bg-sky-200 text-sky-800 transition"
+        >
+          قفل
+        </button>
+      </div>
+
+      <!-- نص الرسالة المعتمد -->
+      <div class="rounded-2xl bg-white/85 border border-sky-100 p-4 sm:p-6 max-h-[58vh] overflow-y-auto message-scroll shadow-inner">
+        <p class="text-sm sm:text-base md:text-[17px] leading-[2] font-semibold text-slate-800 whitespace-pre-line">فرح 22 العمر كلوا ليكي...كل سنه وأنتي طيبه يفروحه كل سنه وأنتي طيبه وجميله وكويسه ودايما في أحسن حال ويارب دايما أشوفك أحسن واحده في الدنيا فخور بيكي ب اي حاجه انتي فيها دلوقتي ولسه هتعمليها فخور بيكي وفخور بيكي كمهندسه معني مش بعترف بيكو ك مهندسين بس لا أنتي كويسه وشاطره ووواااائل يارب أشوفك دايما متفوقه وفي نجاح دايما ... والسلاااااام عليكمممم ❤️</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // =========================================================================
+    // 1. إدارة حالة الباسورد (11:11) ولوحة المفاتيح والكيبورد
+    // =========================================================================
+    const TARGET_PASSWORD = '11:11';
+    let rawDigits = '';
+    let isUnlocked = false;
+
+    const lockScreen = document.getElementById('lockScreen');
+    const lockCard = document.getElementById('lockCard');
+    const birthdayCard = document.getElementById('birthdayCard');
+    const pinDisplay = document.getElementById('pinDisplay');
+    const lockHint = document.getElementById('lockHint');
+
+    function formatPinDisplay(digits) {
+      const padded = (digits + '----').slice(0, 4);
+      return `${padded.slice(0, 2)}:${padded.slice(2, 4)}`;
+    }
+
+    function updatePinUI() {
+      pinDisplay.textContent = formatPinDisplay(rawDigits);
+    }
+
+    function handleKeypadPress(digit) {
+      if (isUnlocked) return;
+      ensureAmbientDuckStarted();
+      playDuckQuack(false);
+
+      if (rawDigits.length >= 4) {
+        rawDigits = '';
+      }
+      rawDigits += digit;
+      updatePinUI();
+      lockHint.textContent = '';
+
+      if (rawDigits.length === 4) {
+        const formatted = `${rawDigits.slice(0, 2)}:${rawDigits.slice(2, 4)}`;
+        if (formatted === TARGET_PASSWORD) {
+          unlockBirthdayCard();
+        } else {
+          playDuckQuack(true);
+          lockHint.textContent = 'حاول مرة أخرى (11:11)';
+          lockCard.classList.remove('shake-anim');
+          void lockCard.offsetWidth;
+          lockCard.classList.add('shake-anim');
+          setTimeout(() => {
+            if (!isUnlocked) {
+              rawDigits = '';
+              updatePinUI();
+            }
+          }, 450);
+        }
+      }
+    }
+
+    function handleBackspace() {
+      if (isUnlocked) return;
+      ensureAmbientDuckStarted();
+      playDuckQuack(false);
+      rawDigits = rawDigits.slice(0, -1);
+      updatePinUI();
+      lockHint.textContent = '';
+    }
+
+    function handleClear() {
+      if (isUnlocked) return;
+      ensureAmbientDuckStarted();
+      playDuckQuack(false);
+      rawDigits = '';
+      updatePinUI();
+      lockHint.textContent = '';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (isUnlocked) return;
+      if (e.key >= '0' && e.key <= '9') {
+        e.preventDefault();
+        handleKeypadPress(e.key);
+      } else if (e.key === 'Backspace') {
+        e.preventDefault();
+        handleBackspace();
+      } else if (e.key === 'Escape' || e.key === 'Delete') {
+        e.preventDefault();
+        handleClear();
+      }
+    });
+
+    function unlockBirthdayCard() {
+      isUnlocked = true;
+      // إيقاف صوت البط المحيطي تماماً عند الدخول
+      stopAmbientDuck();
+      // التأكد من عدم تشغيل أي نغمة إلكترونية بعد الباسورد
+      stopAnySynthSound();
+
+      lockScreen.classList.add('hidden');
+      birthdayCard.classList.remove('hidden');
+      birthdayCard.classList.add('reveal-anim');
+    }
+
+    function lockAgain() {
+      isUnlocked = false;
+      rawDigits = '';
+      updatePinUI();
+      lockHint.textContent = '';
+
+      birthdayCard.classList.add('hidden');
+      birthdayCard.classList.remove('reveal-anim');
+      lockScreen.classList.remove('hidden');
+      ensureAmbientDuckStarted();
+    }
+
+    // =========================================================================
+    // 2. تأثيرات صوت البط (عند الضغط + صوت محيطي هادئ في شاشة القفل فقط)
+    // =========================================================================
+    let audioCtx = null;
+    let ambientTimer = null;
+    let ambientStarted = false;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+      return audioCtx;
+    }
+
+    function stopAnySynthSound() {
+      if (audioCtx && audioCtx.state === 'running') {
+        audioCtx.suspend().catch(() => {});
+      }
+    }
+
+    function playDuckQuack(isDouble = false) {
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+
+        const triggerQuack = (offsetSec, pitchMult = 1) => {
+          const now = ctx.currentTime + offsetSec;
+          const osc = ctx.createOscillator();
+          const formant = ctx.createBiquadFilter();
+          const gain = ctx.createGain();
+
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(340 * pitchMult, now);
+          osc.frequency.exponentialRampToValueAtTime(490 * pitchMult, now + 0.055);
+          osc.frequency.exponentialRampToValueAtTime(255 * pitchMult, now + 0.17);
+
+          formant.type = 'bandpass';
+          formant.frequency.setValueAtTime(980 * pitchMult, now);
+          formant.Q.setValueAtTime(3.2, now);
+
+          gain.gain.setValueAtTime(0.0001, now);
+          gain.gain.linearRampToValueAtTime(0.14, now + 0.025);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+
+          osc.connect(formant);
+          formant.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.19);
+        };
+
+        triggerQuack(0, 1);
+        if (isDouble) {
+          triggerQuack(0.16, 0.92);
+        }
+      } catch (_) {}
+    }
+
+    function ensureAmbientDuckStarted() {
+      if (isUnlocked) return;
+      getAudioContext();
+      if (ambientStarted) return;
+      ambientStarted = true;
+
+      const scheduleSoftQuack = () => {
+        if (isUnlocked) return;
+        playDuckQuack(false);
+        const nextDelay = 2800 + Math.random() * 2400;
+        ambientTimer = setTimeout(scheduleSoftQuack, nextDelay);
+      };
+
+      ambientTimer = setTimeout(scheduleSoftQuack, 1800);
+    }
+
+    function stopAmbientDuck() {
+      ambientStarted = false;
+      if (ambientTimer) {
+        clearTimeout(ambientTimer);
+        ambientTimer = null;
+      }
+    }
+
+    window.addEventListener('pointerdown', () => {
+      if (!isUnlocked) {
+        ensureAmbientDuckStarted();
+      }
+    }, { passive: true });
+
+    // =========================================================================
+    // 3. خلفية النهار والبحيرة والبط ولمسات الدوائر الكهربائية (Canvas)
+    // =========================================================================
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let ducks = [];
+    let clouds = [];
+    let circuits = [];
+    let sparkles = [];
+    let sunAngle = 0;
+    let wavePhase = 0;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      buildSceneElements();
+    }
+
+    function buildSceneElements() {
+      ducks = [];
+      clouds = [];
+      circuits = [];
+      sparkles = [];
+
+      const w = canvas.width;
+      const h = canvas.height;
+
+      const cloudCount = Math.max(3, Math.floor(w / 260));
+      for (let i = 0; i < cloudCount; i++) {
+        clouds.push({
+          x: (w / cloudCount) * i + Math.random() * 90,
+          y: h * (0.08 + Math.random() * 0.22),
+          scale: 0.8 + Math.random() * 0.55,
+          speed: 0.14 + Math.random() * 0.12
+        });
+      }
+
+      const circuitCount = Math.min(5, Math.max(3, Math.floor(w / 300)));
+      for (let i = 0; i < circuitCount; i++) {
+        circuits.push({
+          x: (w / circuitCount) * i + Math.random() * 80,
+          y: h * (0.18 + Math.random() * 0.24),
+          scale: 0.85 + Math.random() * 0.35,
+          speedX: (i % 2 === 0 ? 1 : -1) * 0.16,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+
+      for (let i = 0; i < 24; i++) {
+        sparkles.push({
+          x: Math.random() * w,
+          y: h * (0.55 + Math.random() * 0.42),
+          r: 1.5 + Math.random() * 2.2,
+          phase: Math.random() * Math.PI * 2,
+          kind: i % 5 === 0 ? 'heart' : (i % 3 === 0 ? 'spark' : 'dot')
+        });
+      }
+
+      const duckCount = Math.min(12, Math.max(7, Math.floor(w / 105)));
+      for (let i = 0; i < duckCount; i++) {
+        const dir = i % 2 === 0 ? 1 : -1;
+        ducks.push({
+          x: Math.random() * w,
+          y: h * (0.58 + Math.random() * 0.34),
+          size: 46 + Math.random() * 18,
+          dir: dir,
+          speedX: (0.28 + Math.random() * 0.35) * dir,
+          bobPhase: Math.random() * Math.PI * 2,
+          bobSpeed: 0.02 + Math.random() * 0.015,
+          hasBulb: i % 3 === 0
+        });
+      }
+    }
+
+    function drawSun(x, y, angle) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      ctx.save();
+      ctx.rotate(angle);
+      const rayCount = 12;
+      for (let i = 0; i < rayCount; i++) {
+        ctx.rotate((Math.PI * 2) / rayCount);
+        ctx.strokeStyle = 'rgba(254, 240, 138, 0.45)';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(42, 0);
+        ctx.lineTo(58, 0);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      const sunGrad = ctx.createRadialGradient(0, 0, 6, 0, 0, 36);
+      sunGrad.addColorStop(0, '#fffbeb');
+      sunGrad.addColorStop(0.55, '#fde047');
+      sunGrad.addColorStop(1, '#f59e0b');
+      ctx.fillStyle = sunGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, 34, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawCloud(x, y, scale) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.78)';
+      ctx.beginPath();
+      ctx.arc(-22, 4, 18, 0, Math.PI * 2);
+      ctx.arc(-4, -5, 23, 0, Math.PI * 2);
+      ctx.arc(18, 2, 17, 0, Math.PI * 2);
+      ctx.arc(32, 8, 12, 0, Math.PI * 2);
+      ctx.roundRect(-34, 4, 76, 18, 9);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawCircuitAccent(x, y, scale, phase) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
+      const glow = 0.35 + (Math.sin(phase) + 1) * 0.22;
+
+      ctx.strokeStyle = `rgba(255, 255, 255, ${glow})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(-36, 0);
+      ctx.lineTo(-14, 0);
+      ctx.lineTo(-6, -8);
+      ctx.lineTo(6, -8);
+      ctx.lineTo(14, 0);
+      ctx.lineTo(36, 0);
+      ctx.stroke();
+
+      ctx.fillStyle = `rgba(254, 240, 138, ${Math.min(0.9, glow + 0.25)})`;
+      [[-36, 0], [36, 0]].forEach(([nx, ny]) => {
+        ctx.beginPath();
+        ctx.arc(nx, ny, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.fillStyle = `rgba(251, 113, 133, ${Math.min(0.95, glow + 0.3)})`;
+      ctx.beginPath();
+      ctx.arc(0, -8, 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawDuck(size, wingAngle, hasBulb, bulbPulse) {
+      const s = size / 46;
+      ctx.save();
+      ctx.scale(s, s);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.ellipse(-1, 15, 24, 4.5, 0, 0, Math.PI * 2);
+      ctx.stroke();
+
+      const bodyGrad = ctx.createRadialGradient(-4, -2, 3, 0, 4, 24);
+      bodyGrad.addColorStop(0, '#fefce8');
+      bodyGrad.addColorStop(0.5, '#fde047');
+      bodyGrad.addColorStop(1, '#eab308');
+      ctx.fillStyle = bodyGrad;
+      ctx.strokeStyle = 'rgba(146, 64, 14, 0.45)';
+      ctx.lineWidth = 1.25;
+      ctx.beginPath();
+      ctx.moveTo(-19, 2);
+      ctx.quadraticCurveTo(-25, -5, -20, -9);
+      ctx.quadraticCurveTo(-14, -4, -9, -4);
+      ctx.bezierCurveTo(-3, -7, 13, -6, 17, 4);
+      ctx.bezierCurveTo(19, 12, 8, 16, -4, 16);
+      ctx.bezierCurveTo(-15, 16, -21, 9, -19, 2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      const headGrad = ctx.createRadialGradient(8, -14, 2, 10, -11, 13);
+      headGrad.addColorStop(0, '#ffffff');
+      headGrad.addColorStop(0.4, '#fef08a');
+      headGrad.addColorStop(1, '#eab308');
+      ctx.fillStyle = headGrad;
+      ctx.beginPath();
+      ctx.arc(10.5, -11, 10.8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#fb923c';
+      ctx.strokeStyle = 'rgba(154, 52, 18, 0.45)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(22, -9.5, 5.8, 3.2, 0.08, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(244, 63, 94, 0.48)';
+      ctx.beginPath();
+      ctx.ellipse(11.5, -6.8, 2.8, 1.8, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#1e1b4b';
+      ctx.beginPath();
+      ctx.arc(14, -12.3, 2.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(14.7, -13.1, 0.9, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.save();
+      ctx.translate(-1, 3);
+      ctx.rotate(wingAngle);
+      ctx.fillStyle = '#fef08a';
+      ctx.strokeStyle = 'rgba(146, 64, 14, 0.45)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(-2, 0, 7.5, 4.2, -0.1, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+
+      if (hasBulb) {
+        const scaleBulb = 0.92 + bulbPulse * 0.14;
+        ctx.save();
+        ctx.translate(26, -19 + bulbPulse * 2);
+        ctx.scale(scaleBulb, scaleBulb);
+
+        const halo = ctx.createRadialGradient(0, -3, 1, 0, -3, 13);
+        halo.addColorStop(0, 'rgba(254, 240, 138, 0.9)');
+        halo.addColorStop(1, 'rgba(254, 240, 138, 0)');
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(0, -3, 13, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#fef08a';
+        ctx.strokeStyle = 'rgba(217, 119, 6, 0.65)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(0, -4, 4.8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillRect(-2.4, 0.6, 4.8, 2.5);
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    function renderScene() {
+      const w = canvas.width;
+      const h = canvas.height;
+      sunAngle += 0.004;
+      wavePhase += 0.022;
+
+      ctx.clearRect(0, 0, w, h);
+
+      drawSun(Math.min(w - 75, 110), 85, sunAngle);
+
+      clouds.forEach((c) => {
+        c.x += c.speed;
+        if (c.x > w + 100) c.x = -100;
+        drawCloud(c.x, c.y, c.scale);
+      });
+
+      circuits.forEach((cir) => {
+        cir.x += cir.speedX;
+        cir.phase += 0.03;
+        if (cir.x > w + 80) cir.x = -80;
+        if (cir.x < -80) cir.x = w + 80;
+        drawCircuitAccent(cir.x, cir.y + Math.sin(cir.phase) * 3, cir.scale, cir.phase);
+      });
+
+      const horizonY = h * 0.52;
+      for (let row = 0; row < 3; row++) {
+        const yBase = horizonY + row * (h * 0.14);
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.26 - row * 0.05})`;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        for (let x = 0; x <= w; x += 24) {
+          const wy = yBase + Math.sin(x * 0.015 + wavePhase + row) * 4;
+          if (x === 0) ctx.moveTo(x, wy);
+          else ctx.lineTo(x, wy);
+        }
+        ctx.stroke();
+      }
+
+      sparkles.forEach((s) => {
+        s.phase += 0.035;
+        const alpha = 0.35 + (Math.sin(s.phase) + 1) * 0.3;
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        if (s.kind === 'heart') {
+          ctx.fillStyle = '#fb7185';
+          ctx.font = '14px sans-serif';
+          ctx.fillText('♥', s.x, s.y - Math.sin(s.phase) * 5);
+        } else if (s.kind === 'spark') {
+          ctx.strokeStyle = '#fef08a';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.moveTo(s.x - 4, s.y);
+          ctx.lineTo(s.x + 4, s.y);
+          ctx.moveTo(s.x, s.y - 4);
+          ctx.lineTo(s.x, s.y + 4);
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      });
+
+      ducks.forEach((d) => {
+        d.bobPhase += d.bobSpeed;
+        d.x += d.speedX;
+        const bob = Math.sin(d.bobPhase) * 3.2;
+
+        if (d.dir === 1 && d.x > w + 70) d.x = -70;
+        if (d.dir === -1 && d.x < -70) d.x = w + 70;
+
+        const wingAngle = Math.sin(d.bobPhase * 1.6) * 0.16;
+        const bulbPulse = (Math.sin(d.bobPhase * 2.1) + 1) * 0.5;
+
+        ctx.save();
+        ctx.translate(d.x, d.y + bob);
+        ctx.scale(d.dir, 1);
+        ctx.rotate(Math.sin(d.bobPhase) * 0.05);
+        drawDuck(d.size, wingAngle, d.hasBulb, bulbPulse);
+        ctx.restore();
+      });
+
+      requestAnimationFrame(renderScene);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    updatePinUI();
+    renderScene();
+  </script>
+</body>
+</html>
